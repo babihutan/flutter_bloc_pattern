@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "639427864494",
+    "firebase_url": "https://bloc-rsvp.firebaseio.com",
+    "project_id": "bloc-rsvp",
+    "storage_bucket": "bloc-rsvp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639427864494:android:47af43c95e162376",
+        "android_client_info": {
+          "package_name": "com.example.blocrsvp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639427864494-854od9rbi813n6dbf14d85hbtcukg67e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmgEZ6AVLGW8NkYP9g8scLLWf0ht7sWf0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
