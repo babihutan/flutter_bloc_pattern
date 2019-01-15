@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'model/person.dart';
-import 'bloc/lazy_friends_provider.dart';
+import 'bloc/lazy_friends_bloc.dart';
+import 'bloc/bloc_base.dart';
 import 'base_page.dart';
 
 class LazyFriendsPage extends StatelessWidget with BasePage {
@@ -15,7 +16,7 @@ class LazyFriendsPage extends StatelessWidget with BasePage {
   }
 
   Widget _titleText(BuildContext context) {
-    final bloc = LazyFriendsProvider.of(context);
+    final bloc = BlocProvider.of<LazyFriendsBloc>(context);
     return StreamBuilder(
         stream: bloc.friendIds,
         builder: (context, AsyncSnapshot<List<String>> list) {
@@ -26,7 +27,7 @@ class LazyFriendsPage extends StatelessWidget with BasePage {
   }
 
   Widget _buildBody(BuildContext context) {
-    final bloc = LazyFriendsProvider.of(context);
+    final bloc = BlocProvider.of<LazyFriendsBloc>(context);
     return StreamBuilder<List<String>>(
       stream: bloc.friendIds,
       builder: (context, personIdsSnapshot) {
@@ -37,7 +38,7 @@ class LazyFriendsPage extends StatelessWidget with BasePage {
   }
 
   Widget _buildList(BuildContext context, List<String> personIds) {
-    final bloc = LazyFriendsProvider.of(context);
+    final bloc = BlocProvider.of<LazyFriendsBloc>(context);
     return ListView.builder(
         itemCount: personIds.length,
         padding: const EdgeInsets.only(top: 20.0),

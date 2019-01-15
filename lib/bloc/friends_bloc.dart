@@ -2,8 +2,9 @@
 import '../model/person.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'bloc_base.dart';
 
-class FriendsBloc  {
+class FriendsBloc implements BlocBase {
 
   final _personsSubject = BehaviorSubject<List<Person>>();
   Observable<List<Person>> get friends => _personsSubject.stream;

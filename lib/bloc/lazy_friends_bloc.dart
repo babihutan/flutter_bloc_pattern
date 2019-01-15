@@ -1,8 +1,9 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/person.dart';
+import 'bloc_base.dart';
 
-class LazyFriendsBloc  {
+class LazyFriendsBloc implements BlocBase {
 
   final _personIdsSubject = BehaviorSubject<List<String>>();
   Observable<List<String>> get friendIds => _personIdsSubject.stream;

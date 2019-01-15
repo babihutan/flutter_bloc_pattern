@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'model/person.dart';
-import 'bloc/friends_provider.dart';
+import 'bloc/friends_bloc.dart';
 import 'base_page.dart';
+import 'bloc/bloc_base.dart';
 
 class FriendsPage extends StatelessWidget with BasePage {
 
@@ -16,7 +17,7 @@ class FriendsPage extends StatelessWidget with BasePage {
  }
  
  Widget _titleText(BuildContext context) {
-  final FriendsBloc bloc = FriendsProvider.of(context);
+  final FriendsBloc bloc = BlocProvider.of<FriendsBloc>(context);
    return StreamBuilder(
     stream: bloc.friends,
     builder: (context, AsyncSnapshot<List<Person>> list) {
@@ -28,7 +29,7 @@ class FriendsPage extends StatelessWidget with BasePage {
  }
 
 Widget _buildBody(BuildContext context) {
- final FriendsBloc bloc = FriendsProvider.of(context);
+ final FriendsBloc bloc = BlocProvider.of<FriendsBloc>(context);
  return StreamBuilder<List<Person>>(
    stream: bloc.friends,
    builder: (context, personsSnapshot) {
