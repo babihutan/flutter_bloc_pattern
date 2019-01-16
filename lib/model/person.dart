@@ -26,6 +26,7 @@ class Person implements Comparable<Person> {
      : this.fromMap(snapshot.data, snapshot.reference);
 
   toggleColor() {
+    print('toggle color');
     Firestore.instance.runTransaction((transaction) async {
       final freshSnapshot = await transaction.get(this.reference);
       final fresh = Person.fromSnapshot(freshSnapshot);
@@ -42,7 +43,8 @@ class Person implements Comparable<Person> {
       final freshSnapshot = await transaction.get(this.reference);
       final fresh = Person.fromSnapshot(freshSnapshot);
       final newPointValue = fresh.points + changePointValue;
-      await transaction.update(this.reference, {'votes': newPointValue});
+      print('[person] change points of $name from ${fresh.points} to $newPointValue');
+      await transaction.update(this.reference, {'points': newPointValue});
     });
   }
 
