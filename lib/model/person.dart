@@ -8,6 +8,8 @@ class Person implements Comparable<Person> {
     return this.name.compareTo(p.name);
   }
 
+  Person({this.name, this.id});
+
  Person.fromMap(Map<String, dynamic> map, DocumentReference reference)
      : assert(map['name'] != null),
        name = map['name'], 
@@ -18,5 +20,11 @@ class Person implements Comparable<Person> {
 
  @override
  String toString() => "Person<$id:$name>";
+
+ static List<Person> hardCodedPersons = [
+    Person(id:'1',name:'Joe'),
+    Person(id:'2',name:'Mike'),
+    Person(id:'3',name:'Monica'),
+ ];
 
 }
