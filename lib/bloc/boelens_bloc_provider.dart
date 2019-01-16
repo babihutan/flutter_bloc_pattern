@@ -30,7 +30,7 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
 class _BlocProviderState<T extends BlocBase> extends State<BlocProvider<T>>{
   @override
   void dispose(){
-    print('[bloc_base] dispose bloc');
+    print('[bloc_base] about to dispose bloc');
     widget.bloc?.dispose();
     super.dispose();
   }

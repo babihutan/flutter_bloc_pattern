@@ -1,7 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/person.dart';
-import 'bloc_base.dart';
+import 'boelens_bloc_provider.dart';
 
 class LazyFriendsBloc implements BlocBase {
 
@@ -14,11 +14,16 @@ class LazyFriendsBloc implements BlocBase {
   Function(String) get fetchFriend => _personFetcher.sink.add;
 
   LazyFriendsBloc(String personId) {
+    print('[lazy_friends_bloc] ctor, personId=$personId');
     _fetchFriendIds(personId);
     _personFetcher.stream.transform(_friendsTransformer()).pipe(_personsSubject);
   }
 
-  dispose() {
+  dispose() async {
+    print('[lazy_friends_bloc] dispose');
+    await _personsSubject.drain();
+    await _personIdsSubject.drain();
+    await _personFetcher.drain();
     _personsSubject.close();
     _personFetcher.close();
     _personIdsSubject.close();
@@ -26,7 +31,7 @@ class LazyFriendsBloc implements BlocBase {
 
   _fetchFriendIds(String personId) {
     Firestore.instance.collection('persons/$personId/friends').snapshots().listen( (QuerySnapshot qs) {
-      print('[lazy_persons_bloc] got ${qs.documents.length} lazy friends');
+      print('[lazy_persons_bloc] fetched ${qs.documents.length} lazy friend ids');
       _personIdsSubject.sink.add(qs.documents.map( (DocumentSnapshot ds) => ds.documentID).toList());
     });
   }
@@ -43,8 +48,8 @@ class LazyFriendsBloc implements BlocBase {
   }
 
   Stream<Person> _fetchFriendFromFirestore(String personId) {
-    print('[lazy_persons_bloc] Fetch lazy friend $personId');
     Stream<Person> stream = Firestore.instance.document("persons/$personId").snapshots().map( (DocumentSnapshot doc) {
+       print('[lazy_persons_bloc] Fetched lazy friend $personId');
       return Person.fromSnapshot(doc);
     });
     return stream;

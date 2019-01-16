@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'model/person.dart';
 import 'bloc/lazy_friends_bloc.dart';
-import 'bloc/bloc_base.dart';
+import 'bloc/boelens_bloc_provider.dart';
 import 'base_page.dart';
+import 'navigation_drawer.dart';
 
 class LazyFriendsPage extends StatelessWidget with BasePage {
   static const String navigationUrl = '/lazyfriends';
@@ -12,6 +13,7 @@ class LazyFriendsPage extends StatelessWidget with BasePage {
     return Scaffold(
       appBar: AppBar(title: _titleText(context)),
       body: _buildBody(context),
+      drawer: NavigationDrawer(),
     );
   }
 
