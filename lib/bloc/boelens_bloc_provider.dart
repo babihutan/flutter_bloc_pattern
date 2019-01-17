@@ -1,3 +1,11 @@
+//This is the BLoC provider developed by Didier Boelens (1 December 2018)
+//It provides some nice utilities to make sure you call dispose()
+//and some performance improvements to access the bloc
+
+//
+//For more information, see:
+//https://www.didierboelens.com/2018/12/reactive-programming---streams---bloc---practical-use-cases/
+
 import 'package:flutter/material.dart';
 
 Type _typeOf<T>() => T;
@@ -6,8 +14,8 @@ abstract class BlocBase {
   void dispose();
 }
 
-class BlocProvider<T extends BlocBase> extends StatefulWidget {
-  BlocProvider({
+class BoelensBlocProvider<T extends BlocBase> extends StatefulWidget {
+  BoelensBlocProvider({
     Key key,
     @required this.child,
     @required this.bloc,
@@ -17,7 +25,7 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   final T bloc;
 
   @override
-  _BlocProviderState<T> createState() => _BlocProviderState<T>();
+  _BoelensBlocProviderState<T> createState() => _BoelensBlocProviderState<T>();
 
   static T of<T extends BlocBase>(BuildContext context){
     final type = _typeOf<_BlocProviderInherited<T>>();
@@ -27,10 +35,10 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   }
 }
 
-class _BlocProviderState<T extends BlocBase> extends State<BlocProvider<T>>{
+class _BoelensBlocProviderState<T extends BlocBase> extends State<BoelensBlocProvider<T>>{
   @override
   void dispose(){
-    print('[bloc_base] about to dispose bloc');
+    print('[boelens_bloc_provider] about to dispose bloc');
     widget.bloc?.dispose();
     super.dispose();
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'lazy_friends_page.dart';
 import 'all_persons_page.dart';
-//import 'bloc/all_persons_bloc.dart';
 import 'bloc/lazy_friends_bloc.dart';
 import 'bloc/boelens_bloc_provider.dart';
 import 'auth_service.dart' as Auth;
@@ -18,6 +17,7 @@ class MyApp extends StatelessWidget {
   }
 
   Route<dynamic> _getRoute(RouteSettings settings) {
+
     Widget w;
     switch (settings.name) {
       case AllPersonsPage.navigationUrl:
@@ -34,15 +34,13 @@ class MyApp extends StatelessWidget {
 
   Widget _allPersonsPage() {
     return AllPersonsPage();
-    //return BlocProvider<AllPersonsBloc>(
-    //  bloc: AllPersonsBloc(),
-    //  child: AllPersonsPage(),
-    //);
   }
 
   Widget _lazyFriendsPage() {
+    //LazyFriendsBloc requires the person id, get it from the
+    //AuthService first before constructing the LazyFriendsBloc
     final myId = Auth.myPersonId;
-    return BlocProvider<LazyFriendsBloc>(
+    return BoelensBlocProvider<LazyFriendsBloc>(
       bloc: LazyFriendsBloc(myId),
       child: LazyFriendsPage(),
     );

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/person.dart';
 import 'boelens_bloc_provider.dart';
 
+//BlocBase is part of BoelensBlocProvider..makes sure you call dispose()
 class LazyFriendsBloc implements BlocBase {
 
   final _personIdsSubject = BehaviorSubject<List<String>>();
@@ -20,6 +21,9 @@ class LazyFriendsBloc implements BlocBase {
   }
 
   dispose() async {
+    //sometimes, calling dispose() will cause errors
+    //so we await and drain each subject before closing
+    //to prvent these exceptions
     print('[lazy_friends_bloc] dispose');
     await _personsSubject.drain();
     await _personIdsSubject.drain();

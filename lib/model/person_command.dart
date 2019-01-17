@@ -1,5 +1,7 @@
 import 'person.dart';
 
+// PersonCommand allows us to increment or decrement person points,
+// to set a current person, or to toggle their avatar color.
 abstract class PersonCommand {}
 
 class IncrementPersonPointsByOne extends PersonCommand {}

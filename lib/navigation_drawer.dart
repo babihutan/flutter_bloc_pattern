@@ -4,6 +4,8 @@ import 'all_persons_page.dart';
 import 'lazy_friends_page.dart';
 import 'auth_service.dart' as Auth;
 
+//DrawerItem can have a nested collection of children
+//which will then be grouped
 class DrawerItem {
   String title;
   IconData icon;

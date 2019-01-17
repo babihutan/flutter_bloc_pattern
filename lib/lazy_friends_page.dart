@@ -9,7 +9,7 @@ class LazyFriendsPage extends StatelessWidget with BasePage {
   static const String navigationUrl = '/lazyfriends';
 
   Widget build(BuildContext context) {
-    print('build lazy friends');
+    print('[lazy_friends_page] build lazy friends');
     return Scaffold(
       appBar: AppBar(title: _titleText(context)),
       body: _buildBody(context),
@@ -18,7 +18,7 @@ class LazyFriendsPage extends StatelessWidget with BasePage {
   }
 
   Widget _titleText(BuildContext context) {
-    final bloc = BlocProvider.of<LazyFriendsBloc>(context);
+    final bloc = BoelensBlocProvider.of<LazyFriendsBloc>(context);
     return StreamBuilder(
         stream: bloc.friendIds,
         builder: (context, AsyncSnapshot<List<String>> list) {
@@ -29,7 +29,7 @@ class LazyFriendsPage extends StatelessWidget with BasePage {
   }
 
   Widget _buildBody(BuildContext context) {
-    final bloc = BlocProvider.of<LazyFriendsBloc>(context);
+    final bloc = BoelensBlocProvider.of<LazyFriendsBloc>(context);
     return StreamBuilder<List<String>>(
       stream: bloc.friendIds,
       builder: (context, personIdsSnapshot) {
@@ -40,7 +40,7 @@ class LazyFriendsPage extends StatelessWidget with BasePage {
   }
 
   Widget _buildList(BuildContext context, List<String> personIds) {
-    final bloc = BlocProvider.of<LazyFriendsBloc>(context);
+    final bloc = BoelensBlocProvider.of<LazyFriendsBloc>(context);
     return ListView.builder(
         itemCount: personIds.length,
         padding: const EdgeInsets.only(top: 20.0),
