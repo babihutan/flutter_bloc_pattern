@@ -6,7 +6,6 @@ import 'base_page.dart';
 import 'navigation_drawer.dart';
 
 class AllPersonsPage extends StatelessWidget with BasePage {
-
   //BasePage is a Base Class with a single property (navigationUrl)
   //to make our life easier in main.dart's _getRoute method
   static const String navigationUrl = '/allpersons';
@@ -16,55 +15,69 @@ class AllPersonsPage extends StatelessWidget with BasePage {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('All Persons')),
+      appBar: AppBar(title: _title(context)),
       drawer: NavigationDrawer(),
-      body: _bodyStreaming(context, bloc),
-      floatingActionButton: _floatingActionButton(context, bloc),
+      body: _streamingBody(context),
+      floatingActionButton: _floatingActionButton(context),
     );
   }
-
-  Widget _bodyFixed(BuildContext context) {
-    final fixedFriends = Person.hardCodedPersons;
-    return ListView.builder(
-      itemCount: fixedFriends.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildListItem(context, fixedFriends[index], bloc);
-      },
-    );
-  }
-
-  Widget _bodyStreaming(BuildContext context, AllPersonsBloc bloc) {
+ 
+  Widget _title(BuildContext context) {
     return StreamBuilder(
       stream: bloc.allPersons,
       builder: (context, AsyncSnapshot<List<Person>> list) {
-        if( !list.hasData) return LinearProgressIndicator();
-        return ListView.builder(
-          itemCount: list.data.length,
-          itemBuilder: (BuildContext context, int index) {
-          return _buildListItem(context, list.data[index], bloc);
-          }
-        );
+        if( !list.hasData) return Text('All Persons');
+        return Text('${list.data.length} Persons');
       }
     );
   }
 
-  Widget _buildListItem(BuildContext context, Person p, AllPersonsBloc bloc) {
+  // Widget _fixedBody(BuildContext context) {
+  //   final friends = Person.hardCodedPersons;
+  //   return _listView(context, friends);
+  // }
+
+  Widget _streamingBody(BuildContext context) {
+    return StreamBuilder(
+      stream: bloc.allPersons,
+      builder: (context, AsyncSnapshot<List<Person>> list) {
+        if( !list.hasData) return LinearProgressIndicator();
+        final List<Person> persons = list.data;
+        return _listView(context, persons);
+      }
+    );
+  }
+
+  Widget _listView(BuildContext context, List<Person> friends) {
+    return ListView.builder(
+      itemCount: friends.length,
+      itemBuilder: (BuildContext context, int index) {
+        return _buildListItem(context, friends[index]);
+      },
+    );
+  }
+
+  Widget _buildListItem(
+    BuildContext context,
+    Person p,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         child: ListTile(
-            title: Text(p.name, style:TextStyle(fontSize:18.0)),
-            leading: _avatar(context, p, bloc),
-            trailing: Text(p.points.toString(), style:TextStyle(fontSize:24.0, fontWeight:FontWeight.w500)),
+            title: Text(p.name, style: TextStyle(fontSize: 18.0)),
+            leading: _avatar(context, p),
+            trailing: Text(p.points.toString(),
+                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500)),
             onTap: () {
               print('[all_persons_page] tap ${p.name}');
-              bloc.personCommandSink.add(SetCurrentPerson(person:p));
+              bloc.personCommandSink.add(SetCurrentPerson(person: p));
             }),
       ),
     );
   }
 
-  Widget _avatar(BuildContext context, Person p, AllPersonsBloc bloc) {
+  Widget _avatar(BuildContext context, Person p) {
     return GestureDetector(
       onTap: () {
         print('[all_persons_page] toggle ${p.name} avatar color');
@@ -74,14 +87,14 @@ class AllPersonsPage extends StatelessWidget with BasePage {
     );
   }
 
-  Widget _floatingActionButton(BuildContext context, AllPersonsBloc bloc) {
+  Widget _floatingActionButton(BuildContext context) {
     return Container(
       color: Color.fromRGBO(0, 0, 0, 0.40),
       height: 80.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          _changePersonPointsText(context, bloc),
+          _changePersonPointsText(context),
           SizedBox(width: 20.0),
           FloatingActionButton(
             onPressed: () {
@@ -104,15 +117,17 @@ class AllPersonsPage extends StatelessWidget with BasePage {
     );
   }
 
-  Widget _changePersonPointsText(BuildContext context, AllPersonsBloc bloc) {
+  Widget _changePersonPointsText(BuildContext context) {
     final style = TextStyle(
         color: Colors.white, fontWeight: FontWeight.w700, fontSize: 21.0);
+    String txt = 'No person selected:';
     return StreamBuilder(
-      stream: bloc.selectedPerson,
-      builder: (context, AsyncSnapshot<Person> p) {
-        if( !p.hasData) return Text('No Person Selected', style:style);
-        return Text('Change ${p.data.name} pts:', style:style);
+      stream: bloc.currentPerson,
+      builder: (context, AsyncSnapshot<Person> person) {
+        if( !person.hasData) return Text(txt,style:style);
+        return Text('Change ${person.data.name} pts:', style:style);
       }
     );
+    
   }
 }
